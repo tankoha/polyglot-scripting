@@ -1,0 +1,58 @@
+{
+  "description": "スクリプティング方針の強制層と判断規則層。exec 形式で bb を明示的に呼ぶため、スクリプトの実行ビットに依存しない。",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bb",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/session-context.clj"],
+            "timeout": 15,
+            "statusMessage": "スクリプティング方針を読み込み中..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bb",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/guard-interpreter.clj"],
+            "timeout": 10,
+            "statusMessage": "スクリプト言語ポリシーを検査中..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bb",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/guard-adhoc-script.clj"],
+            "timeout": 10,
+            "statusMessage": "アドホックスクリプトを検査中..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bb",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/lint-script.clj"],
+            "timeout": 30,
+            "statusMessage": "スクリプト品質ゲート..."
+          }
+        ]
+      }
+    ]
+  }
+}

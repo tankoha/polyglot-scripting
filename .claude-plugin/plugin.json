@@ -1,0 +1,11 @@
+{
+  "name": "polyglot-scripting",
+  "displayName": "Polyglot Scripting Policy",
+  "version": "0.1.0",
+  "description": "bash / Babashka / instantfpc のスクリプティング方針を、強制(hooks)・判断規則(SessionStart)・参照資料(skill)の3層で配布する",
+  "author": {
+    "name": "首席参謀殿"
+  },
+  "license": "MIT",
+  "keywords": ["babashka", "clojure", "free-pascal", "instantfpc", "shell", "policy"]
+}

@@ -1,0 +1,62 @@
+;; Babashka 組み込み名前空間の許可リスト。
+;;
+;; このファイルが単一の情報源 (single source of truth) です:
+;;   - hooks/lint-script.clj   がこれを読んで、未許可の require をブロックする（強制）
+;;   - skills/polyglot-scripting/references/babashka.md がこれを人間可読に説明する（参照）
+;;
+;; babashka のバージョンを上げて名前空間が増えたら、ここだけ直せば両方に反映されます。
+;; 実環境での確認:  bb -e "(require '[babashka.fs])"   ← 失敗すればその環境には無い
+
+{:babashka-version-verified-against "1.13.222"
+
+ :groups
+ {:fs        #{babashka.fs
+               clojure.java.io}
+
+  :process   #{babashka.process
+               clojure.java.process
+               clojure.java.shell
+               clojure.tools.cli
+               babashka.cli
+               babashka.terminal
+               babashka.signal}
+
+  :http      #{babashka.http-client
+               babashka.curl
+               org.httpkit.client
+               org.httpkit.server}
+
+  :data      #{cheshire.core
+               clj-yaml.core
+               clojure.data.csv
+               clojure.data.xml
+               cognitect.transit
+               clojure.edn}
+
+  :markup    #{hiccup.core
+               hiccup2.core
+               selmer.parser
+               nextjournal.markdown}
+
+  :core      #{clojure.string
+               clojure.set
+               clojure.walk
+               clojure.zip
+               clojure.math
+               clojure.core.async
+               clojure.core.match
+               flatland.ordered.map
+               flatland.ordered.set}
+
+  :observe   #{clojure.tools.logging
+               taoensso.timbre
+               clojure.test
+               clojure.test.check
+               clojure.pprint}
+
+  :meta      #{rewrite-clj.zip
+               edamame.core
+               sci.core}}
+
+ ;; 常に許可（require しても書かなくても使える、あるいは自明なもの）
+ :always-allowed #{clojure.core}}
