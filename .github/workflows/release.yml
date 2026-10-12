@@ -1,0 +1,28 @@
+name: release
+
+# v* タグの push で .plugin と tar.gz を作り、Releases に添付する。
+# タグと plugin.json の version が食い違っていれば scripts/package.sh が失敗させる。
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package
+        run: scripts/package.sh "$GITHUB_REF_NAME"
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

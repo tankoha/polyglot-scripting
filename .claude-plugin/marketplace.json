@@ -1,0 +1,14 @@
+{
+  "name": "polyglot-scripting",
+  "description": "コーディング方針を配布する個人用 marketplace",
+  "owner": {
+    "name": "首席参謀殿"
+  },
+  "plugins": [
+    {
+      "name": "polyglot-scripting",
+      "source": "./",
+      "description": "bash / Babashka / instantfpc のスクリプティング方針と、ドキュメントコメントの構造規約"
+    }
+  ]
+}

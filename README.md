@@ -38,7 +38,10 @@ bash / Babashka / instantfpc のスクリプティング方針を、各環境に
 
 ```
 polyglot-scripting/
-├── .claude-plugin/plugin.json
+├── .claude-plugin/
+│   ├── plugin.json
+│   └── marketplace.json                  リポジトリ自体を marketplace として登録する用
+├── .github/workflows/release.yml         v* タグで Releases に配布物を添付
 ├── bootstrap.sh                          冪等なブートストラップ (Debian/Ubuntu)
 ├── data/babashka-namespaces.edn          ← 許可リストの正本
 ├── hooks/
@@ -47,12 +50,16 @@ polyglot-scripting/
 │   ├── guard-interpreter.clj             PreToolUse(Bash)
 │   ├── lint-script.clj                   PostToolUse(Write|Edit)
 │   └── session-context.clj               SessionStart
-├── scripts/gen-reference.clj             edn → references/babashka.md 再生成
-└── skills/polyglot-scripting/
-    ├── SKILL.md
-    └── references/
-        ├── babashka.md                   ← 自動生成。直接編集しない
-        └── instantfpc.md
+├── scripts/
+│   ├── gen-reference.clj                 edn → references/babashka.md 再生成
+│   └── package.sh                        .plugin と tar.gz を dist/ に作る
+└── skills/
+    ├── comment-style/SKILL.md            ドキュメントコメントの構造規約
+    └── polyglot-scripting/
+        ├── SKILL.md
+        └── references/
+            ├── babashka.md               ← 自動生成。直接編集しない
+            └── instantfpc.md
 ```
 
 `data/babashka-namespaces.edn` が単一の情報源になっている。ここを直せば、
@@ -67,8 +74,22 @@ bb scripts/gen-reference.clj
 
 ## 導入
 
+経路は3つある。**どの経路でも、ポリシーが効くには `bb` が PATH にあることが前提**
+（[前提](#前提) を参照）。プラグインとして入れる2経路はツールを導入しない。
+
+| 経路 | 向いている環境 | ツール導入 |
+|---|---|---|
+| [bootstrap.sh](#bootstrapsh) | Debian / Ubuntu で全部まとめて入れたい | する |
+| [marketplace](#marketplace) | Claude Code CLI でプラグインだけ入れたい | しない |
+| [.plugin ファイル](#plugin-ファイル) | デスクトップ版でアップロードしたい、オフラインで配りたい | しない |
+
+### bootstrap.sh
+
+[Releases](https://github.com/tankoha/polyglot-scripting/releases) から
+`polyglot-scripting-<version>.tar.gz` を取得して:
+
 ```bash
-tar xzf polyglot-scripting.tar.gz && ./polyglot-scripting/bootstrap.sh
+tar xzf polyglot-scripting-*.tar.gz && ./polyglot-scripting/bootstrap.sh
 ```
 
 `bootstrap.sh` は冪等で、以下を行う（Debian / Ubuntu）:
@@ -85,26 +106,51 @@ marketplace 登録も `claude plugin install` も不要。起動中のセッシ�
 前者が gtk2 / multimedia / fp-ide / fp-docs まで引いて 194 パッケージになるため
 （実測: Ubuntu 24.04 LTS で 194 対 6）。
 
-開発中に配置せず試すなら `--plugin-dir` が使える:
+### marketplace
+
+このリポジトリ自体が marketplace になっている（`.claude-plugin/marketplace.json`）。
+Claude Code 内で:
+
+```
+/plugin marketplace add tankoha/polyglot-scripting
+/plugin install polyglot-scripting@polyglot-scripting
+```
+
+シェルからなら `claude plugin marketplace add` / `claude plugin install` で同じことができる。
+更新は `plugin.json` の `version` を上げて push するだけで各環境に届く。
+
+bootstrap.sh で入れた環境に重ねて入れると、marketplace 版が優先され `@skills-dir` 版はロードされない
+（同名衝突。`claude plugin list` に理由が出る）。ツールの導入だけ bootstrap.sh に任せ、
+プラグインの更新は marketplace で受ける、という併用もできる。
+
+### .plugin ファイル
+
+[Releases](https://github.com/tankoha/polyglot-scripting/releases) の
+`polyglot-scripting-<version>.plugin` は、プラグイン本体だけを zip にしたもの
+（アーカイブ直下に `.claude-plugin/plugin.json`）。デスクトップ版のプラグイン
+アップロードに渡す。アップロード画面が `.zip` しか受け付けない版では、拡張子を
+`.zip` に変えれば通る。
+
+### 開発中に試す
+
+配置せずに試すなら `--plugin-dir` が使える:
 
 ```bash
 claude --plugin-dir ./polyglot-scripting
 claude plugin validate ./polyglot-scripting
 ```
 
-複数環境に配るなら git リポジトリにして marketplace 経由にする。以後の更新が一箇所で済む。
+### リリース
 
-```json
-{
-  "name": "personal-marketplace",
-  "plugins": [
-    {
-      "name": "polyglot-scripting",
-      "source": { "type": "github", "owner": "YOUR_NAME", "repo": "polyglot-scripting" }
-    }
-  ]
-}
+`plugin.json` の `version` を上げてコミットし、同じ番号のタグを push する:
+
+```bash
+git tag v0.3.0 && git push origin v0.3.0
 ```
+
+GitHub Actions が `scripts/package.sh` で `.plugin` と `tar.gz` を作り、Releases に添付する。
+タグと `version` が食い違っていると失敗する。手元で配布物だけ作るなら `scripts/package.sh`
+（`dist/` に出力。コミット済みの内容だけが入る）。
 
 ## 前提
 
