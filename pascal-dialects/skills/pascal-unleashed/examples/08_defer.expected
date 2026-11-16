@@ -1,0 +1,4 @@
+work
+cleanup B
+cleanup A (step=2)
+after block

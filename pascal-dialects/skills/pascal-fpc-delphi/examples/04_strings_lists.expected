@@ -1,0 +1,5 @@
+apple  len=5
+banana len=6
+cherry len=6
+apple,banana,cherry
+upper=APPLE starts=True

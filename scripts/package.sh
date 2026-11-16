@@ -6,6 +6,7 @@
 # 作るもの:
 #   polyglot-scripting-<ver>.plugin   プラグイン本体のみ (zip)。デスクトップ版のアップロード用
 #   polyglot-scripting-<ver>.tar.gz   bootstrap.sh 込みの全体。ツールごと入れたい環境向け
+#   pascal-dialects-<pver>.plugin     別プラグイン pascal-dialects の本体 (zip)
 #
 # ref がタグ (v*) のときは、タグと plugin.json の version の一致を検査する。
 
@@ -40,7 +41,12 @@ TARBALL="dist/${NAME}-${VERSION}.tar.gz"
 git archive --format=zip -o "$PLUGIN" "$REF" -- \
   .claude-plugin/plugin.json hooks skills data README.md
 
+# pascal-dialects: サブディレクトリをアーカイブ直下にして zip にする
+PVERSION="$(git show "${REF}:pascal-dialects/.claude-plugin/plugin.json" | jq -r .version)"
+PPLUGIN="dist/pascal-dialects-${PVERSION}.plugin"
+git archive --format=zip -o "$PPLUGIN" "${REF}:pascal-dialects"
+
 # tar.gz: 従来どおり polyglot-scripting/ 配下に全体を入れる
 git archive --format=tar.gz --prefix="${NAME}/" -o "$TARBALL" "$REF"
 
-ls -l "$PLUGIN" "$TARBALL"
+ls -l "$PLUGIN" "$PPLUGIN" "$TARBALL"

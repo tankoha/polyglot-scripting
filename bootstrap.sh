@@ -2,6 +2,7 @@
 # polyglot-scripting — Debian / Ubuntu 向けブートストラップ
 #
 #   tar xzf polyglot-scripting.tar.gz && ./polyglot-scripting/bootstrap.sh
+#   PASCAL_DIALECTS=1 を付けると、別プラグイン pascal-dialects も入れる
 #
 # 冪等。何度走らせても同じ状態に収束する。
 # 入っているものは飛ばし、足りないものだけ入れる。
@@ -74,6 +75,15 @@ install_plugin() {
   rm -rf "${DEST_DIR}.old"
 }
 
+# --- 3b. pascal-dialects (任意) -------------------------------------------
+# 同じリポジトリの別プラグイン。PASCAL_DIALECTS=1 のときだけ、
+# ~/.claude/skills/pascal-dialects にシンボリックリンクを張って pascal-dialects@skills-dir にする。
+install_pascal_dialects() {
+  [ "${PASCAL_DIALECTS:-0}" = 1 ] || return 0
+  log "pascal-dialects を配置: ${HOME}/.claude/skills/pascal-dialects"
+  ln -sfn "${DEST_DIR}/pascal-dialects" "${HOME}/.claude/skills/pascal-dialects"
+}
+
 # --- 4. 検証 ----------------------------------------------------------------
 verify() {
   local rc=0
@@ -122,6 +132,7 @@ main() {
   fi
   install_babashka
   install_plugin
+  install_pascal_dialects
   verify
 
   cat <<'MSG'

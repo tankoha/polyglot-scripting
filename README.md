@@ -44,6 +44,7 @@ polyglot-scripting/
 ├── .github/workflows/release.yml         v* タグで Releases に配布物を添付
 ├── bootstrap.sh                          冪等なブートストラップ (Debian/Ubuntu)
 ├── data/babashka-namespaces.edn          ← 許可リストの正本
+├── pascal-dialects/                      別プラグイン (Pascal の方言スキルとフック)。README は中にある
 ├── hooks/
 │   ├── hooks.json
 │   ├── guard-adhoc-script.clj            PreToolUse(Write|Edit)  ← 本命
@@ -151,6 +152,20 @@ git tag v0.3.0 && git push origin v0.3.0
 GitHub Actions が `scripts/package.sh` で `.plugin` と `tar.gz` を作り、Releases に添付する。
 タグと `version` が食い違っていると失敗する。手元で配布物だけ作るなら `scripts/package.sh`
 （`dist/` に出力。コミット済みの内容だけが入る）。
+
+## 別プラグイン: pascal-dialects
+
+同じリポジトリ・同じ marketplace に、Pascal の方言 (FPC の objfpc / delphi モード、Unleashed Pascal、
+Delphi、Oxygene) ごとのスキル (要点と few-shot 例) と、スキルを読む前の書き込みを止めるフック・
+コンパイル検証フックをまとめた `pascal-dialects` を置いている。スクリプティング方針とは独立しているので、
+Pascal を書く環境でだけ入れる:
+
+```
+/plugin install pascal-dialects --marketplace tankoha/polyglot-scripting
+```
+
+bootstrap.sh なら `PASCAL_DIALECTS=1` を付ける。詳細は [pascal-dialects/README.md](pascal-dialects/README.md)。
+スキルは Hermes Agent ([hermes-agent-setup](https://github.com/tankoha/hermes-agent-setup)) と共用している。
 
 ## 前提
 

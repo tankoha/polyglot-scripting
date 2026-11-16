@@ -9,6 +9,11 @@
       "name": "polyglot-scripting",
       "source": "./",
       "description": "bash / Babashka / instantfpc のスクリプティング方針と、ドキュメントコメントの構造規約"
+    },
+    {
+      "name": "pascal-dialects",
+      "source": "./pascal-dialects",
+      "description": "Pascal の方言 (FPC objfpc / delphi モード、Unleashed、Delphi、Oxygene) ごとの要点と few-shot 例、読ませる強制とコンパイル検証"
     }
   ]
 }
