@@ -1,7 +1,7 @@
 ---
 name: pascal-unleashed
 description: Unleashed Pascal ({$mode unleashed}) でコードを書くときの要点、objfpc/delphi との違い、検証済みの例、公式ドキュメントの索引
-version: 1.0.0
+version: 1.1.0
 metadata:
   hermes:
     tags: [pascal, unleashed, fpc]
@@ -33,6 +33,8 @@ Unleashed Pascal は Free Pascal のフォーク (3.3.1 ベース)。新しい�
 8. 文字列補間 `$'...{式}...'` の波括弧の中は普通の式。文字列は `'abc'` と書き、引用符を二重にしない。
    外側の地の文で `'` を出すときだけ `''` にする。
 9. 解放は `autofree` (ブロック終了時) か `defer X.Free;` を使ってよい。try/finally も使える。
+10. 環境変数は main で一度だけ `GetEnvironmentVariable` で読み、値を引数で渡す。`GetEnvironmentVariable` は
+    起動時の環境の写しを読むので、libc の `setenv` であとから変えた値は見えない (テストで差し替えられない)。
 
 ## 方言の違い (同じことを 5 方言で)
 
@@ -63,6 +65,7 @@ Unleashed Pascal は Free Pascal のフォーク (3.3.1 ベース)。新しい�
 | `examples/06_match_tuples.pas` | タプルの戻り値と分割代入、match 文、条件形式の match 式 |
 | `examples/07_async_parallel.pas` | async/await、for parallel、lock、cthreads |
 | `examples/08_defer.pas` | defer の LIFO 順と、実行時点の値での評価 |
+| `examples/09_environment.pas` | 環境変数: `setenv` の値が `GetEnvironmentVariable` に見えない罠と、値で渡す形 |
 
 ## 落とし穴 (コンパイルが失敗することを検証済み)
 

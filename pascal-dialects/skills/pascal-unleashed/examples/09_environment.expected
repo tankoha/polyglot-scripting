@@ -1,0 +1,4 @@
+GetEnvironmentVariable: []
+libc getenv:            [set-later]
+compiler=fpc home=/home/demo
+compiler=/opt/fpc/bin/fpc home=/home/demo

@@ -36,9 +36,9 @@ Releases の `pascal-dialects-<version>.plugin` はデスクトップ版のア�
 
 | スキル | 例の検証 | 例 | 誤りの例 |
 |---|---|---|---|
-| `pascal-fpc-objfpc` | `/usr/bin/fpc` (3.2.2) | 5 | 3 |
-| `pascal-fpc-delphi` | `/usr/bin/fpc` (3.2.2) | 5 | 3 |
-| `pascal-unleashed` | `~/unleashed/fpc/bin/fpc` (3.3.1 フォーク) | 8 | 7 |
+| `pascal-fpc-objfpc` | `/usr/bin/fpc` (3.2.2) | 6 | 3 |
+| `pascal-fpc-delphi` | `/usr/bin/fpc` (3.2.2) | 6 | 3 |
+| `pascal-unleashed` | `~/unleashed/fpc/bin/fpc` (3.3.1 フォーク) | 9 | 7 |
 | `pascal-delphi` | 近似: Unleashed の fpc で `-Mdelphiunicode` + inline var・無名メソッド | 7 | 3 |
 | `pascal-oxygene` | なし (コンパイラがない。公式ドキュメントの構文に基づき「未検証」と明記) | 6 | 0 |
 

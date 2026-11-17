@@ -1,7 +1,7 @@
 ---
 name: pascal-fpc-objfpc
 description: Free Pascal 3.2 の {$mode objfpc} でコードを書くときの要点、他方言との違い、検証済みの例
-version: 1.0.0
+version: 1.1.0
 metadata:
   hermes:
     tags: [pascal, fpc, objfpc]
@@ -23,6 +23,8 @@ metadata:
 3. メソッドポインタ・手続き型変数への代入は `@` を付ける。`Btn.OnClick := @Frm.HandleClick;`
 4. 変数は `var` 節で宣言する。`begin` の中の `var x := 1;` (inline var) は FPC 3.2 にはない。
 5. 生成したオブジェクトは `try ... finally X.Free; end;` で解放する。
+6. 環境変数は main で一度だけ `GetEnvironmentVariable` で読み、値を引数で渡す。`GetEnvironmentVariable` は
+   起動時の環境の写しを読むので、libc の `setenv` であとから変えた値は見えない (テストで差し替えられない)。
 
 ## 方言の違い (同じことを 5 方言で)
 
@@ -49,6 +51,7 @@ metadata:
 | `examples/03_exceptions.pas` | 独自例外、CreateFmt、on E: 型 do |
 | `examples/04_strings_lists.pas` | TStringList、Format、文字列ヘルパー |
 | `examples/05_events.pas` | `of object` イベントと手続き型変数への `@` 代入 |
+| `examples/06_environment.pas` | 環境変数: `setenv` の値が `GetEnvironmentVariable` に見えない罠と、値で渡す形 |
 
 ## 落とし穴 (コンパイルが失敗することを検証済み)
 

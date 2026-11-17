@@ -1,7 +1,7 @@
 {
   "name": "pascal-dialects",
   "displayName": "Pascal Dialects (FPC / Unleashed / Delphi / Oxygene)",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Pascal の方言ごとの要点と few-shot 例 (skill) と、方言のスキルを読む前の書き込みを止め、書いたソースをコンパイルで確かめるフック",
   "author": {
     "name": "首席参謀殿"
