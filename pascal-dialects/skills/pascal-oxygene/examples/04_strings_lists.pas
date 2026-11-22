@@ -1,7 +1,7 @@
 namespace StringsLists;
-{ 未検証 (コンパイラなし。公式ドキュメントの構文に基づく)。対象: .NET (Echoes)
+(* Elements 14.0.0.3157 (EBuild、.NET Core) で検証済み。対象: .NET (Echoes)
   Oxygene: String はプラットフォームの文字列 (.NET なら System.String)。不変で 0 始まり。
-  nil と '' は別物。文字列リテラルは '...' でも "..." でもよい。補間は $'...{式}...' }
+  nil と '' は別物。文字列リテラルは '...' でも "..." でもよい。補間は $'...{式}...' *)
 
 interface
 

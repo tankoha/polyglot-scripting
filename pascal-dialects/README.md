@@ -40,7 +40,7 @@ Releases の `pascal-dialects-<version>.plugin` はデスクトップ版のア�
 | `pascal-fpc-delphi` | `/usr/bin/fpc` (3.2.2) | 6 | 3 |
 | `pascal-unleashed` | `~/unleashed/fpc/bin/fpc` (3.3.1 フォーク) | 9 | 7 |
 | `pascal-delphi` | 近似: Unleashed の fpc で `-Mdelphiunicode` + inline var・無名メソッド | 7 | 3 |
-| `pascal-oxygene` | なし (コンパイラがない。公式ドキュメントの構文に基づき「未検証」と明記) | 6 | 0 |
+| `pascal-oxygene` | RemObjects Elements 14 の EBuild (Earth の flatpak に同梱) で .NET Core 向けにビルドして実行 | 6 | 0 |
 
 例 01〜05 は全方言で同じお題 (クラスとプロパティ、ジェネリクス、例外、文字列とリスト、イベント)。
 並べると違いが分かる対比例になっている。
@@ -104,5 +104,5 @@ tests/hooks.sh            # フックを合成ペイロードで試す
 
 - `.inc` そのものの編集は対象外。
 - コンパイル検証はファイルのあるディレクトリだけを `-Fu` / `-Fi` に入れる。
-- Delphi と Oxygene のコードはコンパイルで検証されない。それぞれの環境でビルドして確かめること。
+- Delphi のコードはコンパイルで検証されない (Oxygene は `tests/check-examples.sh` で例だけ検証)。それぞれの環境でビルドして確かめること。
 - Bash の heredoc などでファイルを書くと、フックを通らない。

@@ -1,5 +1,5 @@
 namespace GenericsDemo;
-{ 未検証 (コンパイラなし。公式ドキュメントの構文に基づく)。対象: .NET (Echoes)
+{ Elements 14.0.0.3157 (EBuild、.NET Core) で検証済み。対象: .NET (Echoes)
   Oxygene: ジェネリクスは <T> だけ (generic / specialize は書かない)。生成は new List<Integer>。
   ジェネリックメソッドの制約は Delphi 式ではなく where (例: where T is IComparable) }
 
@@ -24,7 +24,7 @@ implementation
 class method ArrayHelpers.FindIndex<T>(list: array of T; item: T): Integer;
 begin
   for i: Integer := 0 to list.Length - 1 do
-    if list[i] = item then
+    if list[i].Equals(item) then   { 制約なしの T に = は使えない }
       exit i;
   exit -1;
 end;

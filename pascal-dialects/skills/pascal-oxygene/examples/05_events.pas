@@ -1,5 +1,5 @@
 namespace EventsDemo;
-{ 未検証 (コンパイラなし。公式ドキュメントの構文に基づく)。対象: .NET (Echoes)
+{ Elements 14.0.0.3157 (EBuild、.NET Core) で検証済み。対象: .NET (Echoes)
   Oxygene: event 名前: block(引数); で宣言し、購読は += @メソッド、解除は -= @メソッド。
   ラムダ (引数) -> 式 も購読できる。未購読のまま呼ぶと例外なので assigned() で確かめてから呼ぶ }
 

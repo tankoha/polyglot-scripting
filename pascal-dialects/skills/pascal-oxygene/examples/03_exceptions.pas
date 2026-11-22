@@ -1,5 +1,5 @@
 namespace ExceptionsDemo;
-{ 未検証 (コンパイラなし。公式ドキュメントの構文に基づく)。対象: .NET (Echoes)
+{ Elements 14.0.0.3157 (EBuild、.NET Core) で検証済み。対象: .NET (Echoes)
   Oxygene: raise new 例外クラス(...)。except の中は on E: 型 do の並び (where で絞り込みも可)。
   再送出は raise; (raise E にすると呼び出し履歴が失われる) }
 

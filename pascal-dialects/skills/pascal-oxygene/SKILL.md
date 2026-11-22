@@ -1,7 +1,7 @@
 ---
 name: pascal-oxygene
-description: RemObjects Oxygene (Elements) でコードを書くときの要点、Delphi との違い、例 (コンパイラ未検証)
-version: 1.0.0
+description: RemObjects Oxygene (Elements) でコードを書くときの要点、Delphi との違い、例 (Elements 14 の .NET Core で検証済み)
+version: 1.1.0
 metadata:
   hermes:
     tags: [pascal, oxygene, remobjects, elements]
@@ -15,7 +15,8 @@ metadata:
 
 Oxygene は Object Pascal 系だが、Delphi・FPC とは別の言語。.NET (Echoes)、Java (Cooper)、
 Cocoa (Toffee)、ネイティブ (Island) 向けにコンパイルされる。
-**この環境にはコンパイラがなく、例はコンパイルで検証していない。** 公式ドキュメント
+**例は Elements 14.0.0.3157 の EBuild で .NET Core (Echoes) 向けにビルドし、実行結果まで確かめてある**
+(`tests/check-examples.sh pascal-oxygene`)。他のプラットフォーム (Island 等) では未確認。公式ドキュメント
 (https://elements.docs.remobjects.com/Oxygene/) の構文に基づいて書いている。迷ったら公式ドキュメントを確認すること。
 
 ## 必ず守ること
@@ -39,6 +40,14 @@ Cocoa (Toffee)、ネイティブ (Island) 向けにコンパイルされる。
 13. Delphi にあって Oxygene にないもの: `destructor`、`initialization` / `finalization` 節、`resourcestring`、
     `published`、`overload` 指定 (常に有効)、`reference to`、`asm`、Delphi 式の `with`。
 
+## コンパイラで確かめた罠 (Elements 14、2026-11-22)
+- 制約のない型引数どうしに `=` は使えない (`cannot find operator to evaluate "T" = "T"`)。
+  `a.Equals(b)` か `EqualityComparer<T>.Default.Equals(a, b)` を使う。
+- `{ ... }` コメントは最初の `}` で閉じる。コメントに `$'{式}'` のような波括弧を書くとそこで閉じ、
+  後ろが構文エラーになる (`got two dots (..)` など)。波括弧を含むコメントは `(* ... *)` にする。
+- `loop` は予約語 (無限ループの `loop` 文)。メソッド名などに `Loop` を使うと `identifier expected, got "loop"`。
+  名前を変えるか `&Loop` と書く。
+
 ## 方言の違い (同じことを 5 方言で)
 
 | 項目 | FPC objfpc | FPC delphi モード | Unleashed | Delphi (Embarcadero) | Oxygene |
@@ -53,7 +62,7 @@ Cocoa (Toffee)、ネイティブ (Island) 向けにコンパイルされる。
 | 解放 | `try/finally` で `Free` | `try/finally` で `Free` | `autofree` / `defer` も可 | `try/finally` で `Free` | 不要 (GC / ARC) |
 | メソッド宣言 | `procedure` / `function` | 同左 | 同左 | 同左 | `method` |
 
-## 例 (未検証。対象は .NET)
+## 例 (Elements 14 の .NET Core で検証済み)
 このスキルのディレクトリの `examples/<ファイル>` から必要なものだけ読む
 (Claude Code: スキルのベースディレクトリからの相対パスで Read。Hermes: `skill_view(name="pascal-oxygene", file_path="examples/<ファイル>")`)。
 01〜05 は他方言の例と同じお題。
@@ -68,5 +77,9 @@ Cocoa (Toffee)、ネイティブ (Island) 向けにコンパイルされる。
 | `examples/06_lambdas_loops.pas` | ラムダ、無名メソッド、step / downto |
 
 ## Verification
-- この環境ではコンパイルできない。Elements (Fire / Water / Earth、または ebuild) でビルドして確かめること。
+- 例の検証: `tests/check-examples.sh pascal-oxygene` (Earth の flatpak に同梱の EBuild と dotnet を使う)。
+- 書いたコードを手で確かめるとき: `.elements` プロジェクト (例は check-examples.sh の oxygene_project) を作り、
+  `flatpak run --command=/app/dotnet/dotnet com.remobjects.earth /app/earth/EBuild.dll X.elements` でビルド、
+  同じ `--command` で `Bin/X.dll` を実行する。flatpak の中の `/tmp` はホストと別なのでホームの下で作業する。
+- 書いたソースはフック (`verify`) ではコンパイルされない。
 - 検証していない構文を新たに使うときは、公式ドキュメントで書き方を確認してから使う。

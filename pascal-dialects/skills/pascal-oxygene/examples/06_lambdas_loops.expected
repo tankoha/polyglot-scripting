@@ -1,0 +1,10 @@
+lambda 1
+lambda 2
+lambda 3
+total=6
+step 0
+step 5
+step 10
+down 3
+down 2
+down 1

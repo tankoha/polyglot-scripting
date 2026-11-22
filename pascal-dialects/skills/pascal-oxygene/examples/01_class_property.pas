@@ -1,5 +1,5 @@
 namespace ClassProperty;
-{ 未検証 (コンパイラなし。公式ドキュメントの構文に基づく)。対象: .NET (Echoes)
+{ Elements 14.0.0.3157 (EBuild、.NET Core) で検証済み。対象: .NET (Echoes)
   Oxygene: unit ではなく namespace。メソッドは method、コンストラクタは名前なしの constructor、
   生成は new。GC なので destructor と Free はない }
 

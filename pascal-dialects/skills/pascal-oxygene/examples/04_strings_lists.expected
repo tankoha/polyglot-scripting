@@ -1,0 +1,5 @@
+0: apple len=5
+1: banana len=6
+2: cherry len=6
+apple,banana,cherry
+upper=APPLE first char=a
